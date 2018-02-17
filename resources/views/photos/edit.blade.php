@@ -20,6 +20,10 @@
 
                     {!! Form::open(['action' => ['PhotosController@update',$photo->id],'method'=>'post']) !!}
 
+                    <!-- show photo -->
+                    <img width="200" src="{{$photo->getPathAttribute()}}">
+
+
                     {{Form::bsText('photo',$photo->photo,[])}}
                     {{Form::bsText('title',$photo->title,[])}}
                     {{Form::bsText('size',$photo->size,[])}}
