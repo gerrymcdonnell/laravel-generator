@@ -121,7 +121,7 @@
       parallelUploads: 2,
       uploadMultiple: false,
       maxFilesize: 256,
-      paramName: "photo",
+      paramName: "file",
       createImageThumbnails: true,
       maxThumbnailFilesize: 10,
       thumbnailWidth: 120,

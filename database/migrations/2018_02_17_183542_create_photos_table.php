@@ -17,12 +17,13 @@ class CreatePhotosTable extends Migration
             $table->increments('id');
 
             //added fields
-            $table->string('title');
-            $table->string('photo');
+            $table->string('title')->nullable();
             $table->string('description')->nullable();
-            $table->string('size');
+            $table->string('size')->nullable();
+            $table->integer('user_id')->nullable();
 
-            $table->integer('user_id');
+            //the file name of the photo
+            $table->string('photo');
 
 
             $table->timestamps();

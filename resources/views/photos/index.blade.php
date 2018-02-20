@@ -15,7 +15,12 @@
                     @endif
 
                     <h3>
-                        Photos <a href="/photos/create">New Photo</a>
+                        Photos <hr>
+                        <a href="/photos/create">New Photo</a>
+
+                        <br>
+                        <a href="/photos/create2">Drag Drop</a>
+
                         <hr>
                         <br>
 

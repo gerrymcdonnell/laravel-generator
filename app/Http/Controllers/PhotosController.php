@@ -17,24 +17,38 @@ class PhotosController extends Controller
     public function index()
     {
         //get all photos by this user
+        $photos=Photo::orderBy('created_at','desc')->get();
+
+        return view('photos.index')->with('photos',$photos);
+    }
+
+
+    public function my()
+    {
+        //get all photos by this user
         $photos=Photo::where('user_id',auth()->user()->id)
             ->orderBy('created_at','desc')->get();
 
         return view('photos.index')->with('photos',$photos);
     }
+
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         //default view
-        //return view('photos.create');
+        return view('photos.create');
+    }
 
+
+    public function create2(){
         //dropzone from codehacking project
         return view('photos.upload');
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -43,7 +57,7 @@ class PhotosController extends Controller
      */
 
     //problem here
-    /*public function store(Request $request)
+    public function store(Request $request)
     {
         //validation
         $this->validate($request,[
@@ -80,18 +94,38 @@ class PhotosController extends Controller
 
         //flash message and redirect
         return redirect('/photos/')->with('success','photo Saved ');
-    }*/
+    }
 
 
-    public function store (Request $request){
+    //for drop zone upload
+    public function store2 (Request $request){
 
-        $file = $request->file('photo');
+        try{
+            $file = $request->file('file');
 
-        $name = time().$file->getClientOriginalName();
+            $name = time().$file->getClientOriginalName();
 
-        Photo::create(['photo'=>$name]);
+            $photo=new Photo;
 
-        $file->move('images',$name);
+            $photo->photo=$name;
+            $photo->user_id=auth()->user()->id;
+
+            $photo->save();
+
+            /*Photo::create(
+                [
+                    'photo'=>$name,
+                    'user_id'=>auth()->user()->id
+                ]);*/
+
+            $file->move('images',$name);
+
+            //flash message and redirect
+            return redirect('/photos/')->with('success','photo Saved ');
+        }
+        catch(Exception $e){
+            echo $e;
+        }
 
     }
 
