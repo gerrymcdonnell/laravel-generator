@@ -29,8 +29,10 @@ class PhotosController extends Controller
      */
     public function create()
     {
+        //default view
         //return view('photos.create');
 
+        //dropzone from codehacking project
         return view('photos.upload');
     }
     /**
@@ -41,7 +43,7 @@ class PhotosController extends Controller
      */
 
     //problem here
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         //validation
         $this->validate($request,[
@@ -78,6 +80,19 @@ class PhotosController extends Controller
 
         //flash message and redirect
         return redirect('/photos/')->with('success','photo Saved ');
+    }*/
+
+
+    public function store (Request $request){
+
+        $file = $request->file('photo');
+
+        $name = time().$file->getClientOriginalName();
+
+        Photo::create(['photo'=>$name]);
+
+        $file->move('images',$name);
+
     }
 
 
