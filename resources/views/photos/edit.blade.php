@@ -26,12 +26,13 @@
 
                     {{Form::bsText('photo',$photo->photo,[])}}
                     {{Form::bsText('title',$photo->title,[])}}
-                    {{Form::bsText('size',$photo->size,[])}}
                     {{Form::bsText('description',$photo->description,[])}}
+
+                    {{Form::bsText('size',$photo->size,[])}}
 
                     {{Form::hidden('_method','PUT')}}
 
-                    {{Form::bsSubmit('submit me',['class'=>'btn btn-primary'])}}
+                    {{Form::bsSubmit('Save',['class'=>'btn btn-primary'])}}
 
                     {!! Form::close() !!}
 

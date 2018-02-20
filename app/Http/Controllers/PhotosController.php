@@ -48,20 +48,9 @@ class PhotosController extends Controller
 
         $user_id=auth()->user()->id;
 
-        //get file name with ext
-        $filenamewithext=$request->file('photo')->getClientOriginalName();
+        //handle the file upload
+        $filenametostore=$this->uploadFile($request);
 
-        //get just the filename
-        $filename=pathinfo($filenamewithext,PATHINFO_FILENAME);
-
-        //get the ext only
-        $ext=$request->file('photo')->getClientOriginalExtension();
-
-        //create new filename
-        $filenametostore=$filename.'-'.time().'.'.$ext;
-
-        //upload image in storage/public/photo/user_id/filename
-        $path=$request->file('photo')->storeAs('public/photos/'.$user_id,$filenametostore);
 
         //save record
         $photo=new Photo;
@@ -69,7 +58,7 @@ class PhotosController extends Controller
 
         //if the title is empty set it to the rfile name
         if(empty($request->input('title'))){
-            $photo->title=$filename;
+            $photo->title=$request->file('photo')->getClientOriginalName();
         }
         else{
             $photo->title=$request->input('title');
@@ -87,6 +76,35 @@ class PhotosController extends Controller
 
         //flash message and redirect
         return redirect('/photos/')->with('success','photo Saved ');
+    }
+
+
+    /**
+     * @param $request
+     * @return string
+     * handle the file upload
+     */
+    function uploadFile($request){
+
+        $user_id=auth()->user()->id;
+
+        //get file name with ext
+        $filenamewithext=$request->file('photo')->getClientOriginalName();
+
+        //get just the filename
+        $filename=pathinfo($filenamewithext,PATHINFO_FILENAME);
+
+        //get the ext only
+        $ext=$request->file('photo')->getClientOriginalExtension();
+
+        //create new filename
+        $filenametostore=$filename.'-'.time().'.'.$ext;
+
+        //upload image in storage/public/photo/user_id/filename
+        $path=$request->file('photo')->storeAs('public/photos/'.$user_id,$filenametostore);
+
+
+        return $filenametostore;
     }
 
     /**
