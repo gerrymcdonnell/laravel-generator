@@ -86,26 +86,41 @@ class PhotosController extends Controller
      */
     function uploadFile($request){
 
-        $user_id=auth()->user()->id;
+        try{
+            $user_id=auth()->user()->id;
 
-        //get file name with ext
-        $filenamewithext=$request->file('photo')->getClientOriginalName();
+            //get file name with ext
+            $filenamewithext=$request->file('photo')->getClientOriginalName();
 
-        //get just the filename
-        $filename=pathinfo($filenamewithext,PATHINFO_FILENAME);
+            //get just the filename
+            $filename=pathinfo($filenamewithext,PATHINFO_FILENAME);
 
-        //get the ext only
-        $ext=$request->file('photo')->getClientOriginalExtension();
+            //get the ext only
+            $ext=$request->file('photo')->getClientOriginalExtension();
 
-        //create new filename
-        $filenametostore=$filename.'-'.time().'.'.$ext;
+            //create new filename
+            $filenametostore=$filename.'-'.time().'.'.$ext;
 
-        //upload image in storage/public/photo/user_id/filename
-        $path=$request->file('photo')->storeAs('public/photos/'.$user_id,$filenametostore);
+            //upload image in storage/public/photo/user_id/filename
+            $path=$request->file('photo')->storeAs('public/photos/'.$user_id,$filenametostore);
 
-
-        return $filenametostore;
+            return $filenametostore;
+        }
+        catch(Exception $e){
+            return false;
+        }
     }
+
+    /*
+    function uploadFile2($request){
+        $file = $request->file('file');
+
+        $name = time().$file->getClientOriginalName();
+
+        Photo::create(['file'=>$name]);
+
+        $file->move('imagesxxx',$name);
+    }*/
 
     /**
      * Display the specified resource.
@@ -118,7 +133,7 @@ class PhotosController extends Controller
     {
         //get the record
         $photo=Photo::find($id);
-        //return the view and pass in the todo variable
+        //return the view
         return view('photos.show')
             ->with('photo',$photo);
     }
