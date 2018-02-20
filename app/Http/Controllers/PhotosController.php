@@ -29,7 +29,9 @@ class PhotosController extends Controller
      */
     public function create()
     {
-        return view('photos.create');
+        //return view('photos.create');
+
+        return view('photos.upload');
     }
     /**
      * Store a newly created resource in storage.
